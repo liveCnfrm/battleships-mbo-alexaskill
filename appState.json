@@ -1,0 +1,105 @@
+{
+  "EDITOR_STATE": {
+    "allProjectFiles": {
+      "e0cba156-4de2-4bc1-a634-a1dbbe622289": {
+        "id": "e0cba156-4de2-4bc1-a634-a1dbbe622289",
+        "parent": null,
+        "name": "battleShipsMBO.js",
+        "type": "JS_LAMBDA",
+        "isDirectory": false,
+        "children": [],
+        "isRemovable": true,
+        "filePath": "battleShipsMBO.js",
+        "cursor": {
+          "lineNumber": 17,
+          "column": 33
+        },
+        "config": {
+          "runtime": "nodejs10.x",
+          "handler": "handler",
+          "timeout": 60,
+          "memory": 128,
+          "layers": [],
+          "name": "battleShipsMBO"
+        },
+        "triggers": [
+          {
+            "resourceName": "alexaSKb3ca4d90d3ce4143830bf243f9d3e7ac",
+            "config": {}
+          }
+        ],
+        "lastUpdated": 1623400524451
+      },
+      "2aaa4441-e4c5-4d05-ad70-95477181fd77": {
+        "id": "2aaa4441-e4c5-4d05-ad70-95477181fd77",
+        "parent": null,
+        "name": "package.json",
+        "type": "JSON_FILE",
+        "isDirectory": false,
+        "children": [],
+        "isRemovable": true,
+        "filePath": "package.json"
+      }
+    },
+    "openFiles": [
+      "e0cba156-4de2-4bc1-a634-a1dbbe622289"
+    ],
+    "currentFileId": "e0cba156-4de2-4bc1-a634-a1dbbe622289",
+    "resources": {
+      "alexaSKb3ca4d90d3ce4143830bf243f9d3e7ac": {
+        "name": "alexaSKb3ca4d90d3ce4143830bf243f9d3e7ac",
+        "type": "ALEXA",
+        "config": {
+          "type": 1,
+          "verifiedID": true,
+          "skillID": "amzn1.ask.skill.b3ca4d90-d3ce-4143-830b-f243f9d3e7ac",
+          "applicationID": ""
+        }
+      }
+    },
+    "customTemplate": {
+      "syntax": "JSON",
+      "overrideDefault": false,
+      "dialect": null,
+      "definitions": null
+    },
+    "envVariables": [
+      {
+        "lambdaId": "all",
+        "varKey": "SIGMA_AWS_ACC_ID",
+        "varValue": null,
+        "shouldPersist": false,
+        "displayOnly": false,
+        "editable": false
+      }
+    ],
+    "packageJSON": {
+      "dependencies": {
+        "ask-sdk": {
+          "name": "ask-sdk",
+          "language": "nodejs",
+          "version": "2.7.0",
+          "dev": false,
+          "notRemovable": false
+        }
+      }
+    }
+  },
+  "PROJECT_META": {
+    "sigmaVersion": "1.8.0",
+    "projectName": "battleShipsMBO",
+    "projectDescription": "",
+    "projectVersion": "1.0.0",
+    "projectRegion": "us-east-1",
+    "platform": "AWS",
+    "language": "nodejs",
+    "platformRegions": {}
+  },
+  "VCS_STATE": {
+    "provider": "GitHub",
+    "repo": {
+      "name": "battleships-mbo-alexaskill",
+      "url": "https://github.com/liveCnfrm/battleships-mbo-alexaskill"
+    }
+  }
+}
