@@ -33,8 +33,10 @@ const PlaceShipHandler = {
     },
     handle(handlerInput) {
         // invoke custom logic of the handler
-        const row = Number(Alexa.getSlotValue(handlerInput.requestEnvelope, 'row'));
-        const column = Char(Alexa.getSlotValue(handlerInput.requestEnvelope, 'column'));
+        const row = Alexa.getSlotValue(handlerInput.requestEnvelope, 'row');
+        const column = Alexa.getSlotValue(handlerInput.requestEnvelope, 'column');
+
+    
 
         const speechText = "Das aktuelle Schiff wurde auf " + column + " " + row + " gesetzt.";
         return handlerInput.responseBuilder
@@ -51,8 +53,8 @@ const ShootHandler = {
     },
     handle(handlerInput) {
         // invoke custom logic of the handler
-        const row = Number(Alexa.getSlotValue(handlerInput.requestEnvelope, 'row'));
-        const column = Char(Alexa.getSlotValue(handlerInput.requestEnvelope, 'column'));
+        const row = Alexa.getSlotValue(handlerInput.requestEnvelope, 'row');
+        const column = Alexa.getSlotValue(handlerInput.requestEnvelope, 'column');
 
         const speechText = "Okay, du hast auf die gegnerische Position " + column + " " + row + " geschossen";
         return handlerInput.responseBuilder
@@ -70,7 +72,7 @@ const RotateHandler = {
     handle(handlerInput) {
         // invoke custom logic of the handler
         //const slotValue = Alexa.getSlotValue(handlerInput.requestEnvelope, 'slotName');
-        const speechText = 'Das aktuelle zu platzierende Schiff wurde um 90 Grad gedreht.';
+        const speechText = 'Das aktuelle Schiff wurde um 90 Grad gedreht.';
         return handlerInput.responseBuilder
             .speak(speechText)
             .withShouldEndSession(false)
@@ -147,7 +149,7 @@ const LaunchRequestHandler = {
         return handlerInput.requestEnvelope.request.type === 'LaunchRequest';
     },
     handle(handlerInput) {
-        const speechText = "Willkommen bei Schiffe Versenken in MBO. Zunächst musst du deine Schiffe auf deinem Spielfeld platzieren. Du siehst auf der Spielanzeige dein aktuelles Schiff und dessen Rotation. Um dieses um 90 Grad zu rotieren, sage einfach, Schiff drehen. Um das Schiff zu platzieren, sage einfach, platziere Schiff auf Zeile Spalte. Wenn dir die finale Position deines aktuellen Schiffes gefällt, sag einfach, nächstes Schiff. Wenn du alle Schiffe gesetzt hast, sag einfach, fertig.";
+        const speechText = "Willkommen bei Schiffe Versenken in M B O. Zunächst musst du deine Schiffe auf deinem Spielfeld platzieren. Du siehst auf der Spielanzeige dein aktuelles Schiff und dessen Rotation. Um ein Schiff um 90 Grad zu rotieren, sage einfach, Schiff drehen. Um das Schiff zu platzieren, sage einfach, platziere Schiff auf Zeile Spalte. Wenn dir die finale Position deines aktuellen Schiffes gefällt, sag einfach, nächstes Schiff. Wenn du alle Schiffe gesetzt hast, sag einfach, fertig.";
         return handlerInput.responseBuilder
             .speak(speechText)
             .withShouldEndSession(false)
