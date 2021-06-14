@@ -1,6 +1,19 @@
 const Alexa = require('ask-sdk');
 let skill;
 
+const https = require('https');
+
+https.get('https://battleshipsmbo.ddns.net/', (resp) => {
+let data = '';
+// A chunk of data has been received.
+resp.on('data', (chunk) => {
+data += chunk;
+});
+}).on("error", (err) => {
+console.log("Error: " + err.message);
+});
+
+
 exports.handler = async function (event, context) {
     //console.log('REQUEST ' + JSON.stringify(event));
     if (!skill) {
