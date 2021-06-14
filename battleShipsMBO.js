@@ -33,8 +33,10 @@ const PlaceShipHandler = {
     },
     handle(handlerInput) {
         // invoke custom logic of the handler
-        //const slotValue = Alexa.getSlotValue(handlerInput.requestEnvelope, 'slotName');
-        const speechText = 'This is PlaceShip intent handler';
+        const row = Number(Alexa.getSlotValue(handlerInput.requestEnvelope, 'row'));
+        const column = Char(Alexa.getSlotValue(handlerInput.requestEnvelope, 'column'));
+
+        const speechText = "Das aktuelle Schiff wurde auf " + column + " " + row + " gesetzt.";
         return handlerInput.responseBuilder
             .speak(speechText)
             .withShouldEndSession(false)
@@ -50,7 +52,7 @@ const RotateHandler = {
     handle(handlerInput) {
         // invoke custom logic of the handler
         //const slotValue = Alexa.getSlotValue(handlerInput.requestEnvelope, 'slotName');
-        const speechText = 'This is Rotate intent handler';
+        const speechText = 'Das aktuelle zu platzierende Schiff wurde um 90 Grad gedreht.';
         return handlerInput.responseBuilder
             .speak(speechText)
             .withShouldEndSession(false)
@@ -66,7 +68,7 @@ const NextShipHandler = {
     handle(handlerInput) {
         // invoke custom logic of the handler
         //const slotValue = Alexa.getSlotValue(handlerInput.requestEnvelope, 'slotName');
-        const speechText = 'This is NextShip intent handler';
+        const speechText = 'Das nächste Schiff ist ausgewählt';
         return handlerInput.responseBuilder
             .speak(speechText)
             .withShouldEndSession(false)
@@ -82,7 +84,7 @@ const RestartHandler = {
     handle(handlerInput) {
         // invoke custom logic of the handler
         //const slotValue = Alexa.getSlotValue(handlerInput.requestEnvelope, 'slotName');
-        const speechText = 'This is Restart intent handler';
+        const speechText = 'Okay, ich starte das Spiel "Schiffe Versenken" von vorn.';
         return handlerInput.responseBuilder
             .speak(speechText)
             .withShouldEndSession(false)
@@ -98,7 +100,7 @@ const FinishPlacementHandler = {
     handle(handlerInput) {
         // invoke custom logic of the handler
         //const slotValue = Alexa.getSlotValue(handlerInput.requestEnvelope, 'slotName');
-        const speechText = 'This is FinishPlacement intent handler';
+        const speechText = 'Okay, alle Schiffe sind gesetzt. Jetzt kannst du auf eine Position des gegnerischen Spielfelds schießen. Sage einfach, Schieße auf Zeile Spalte.';
         return handlerInput.responseBuilder
             .speak(speechText)
             .withShouldEndSession(false)
@@ -143,7 +145,7 @@ const LaunchRequestHandler = {
         return handlerInput.requestEnvelope.request.type === 'LaunchRequest';
     },
     handle(handlerInput) {
-        const speechText = 'Willkommen bei Schiffe Versenken in MBO';
+        const speechText = "Willkommen bei Schiffe Versenken in MBO. Zunächst musst du deine Schiffe auf deinem Spielfeld platzieren. Du siehst auf der Spielanzeige dein aktuelles Schiff und dessen Rotation. Um dieses um 90 Grad zu rotieren, sage einfach, Schiff drehen. Um das Schiff zu platzieren, sage einfach, platziere Schiff auf Zeile Spalte. Wenn dir die finale Position deines aktuellen Schiffes gefällt, sag einfach, nächstes Schiff. Wenn du alle Schiffe gesetzt hast, sag einfach, fertig.";
         return handlerInput.responseBuilder
             .speak(speechText)
             .withShouldEndSession(false)
