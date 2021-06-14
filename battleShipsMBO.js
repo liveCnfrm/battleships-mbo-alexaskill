@@ -104,7 +104,7 @@ const RestartHandler = {
     handle(handlerInput) {
         // invoke custom logic of the handler
         //const slotValue = Alexa.getSlotValue(handlerInput.requestEnvelope, 'slotName');
-        const speechText = 'Okay, ich starte das Spiel Schiffe Versenken von vorn.';
+        const speechText = 'Okay, ich starte das Spiel Schiffe Versenken von vorn. Nun kannst du musst du erst wieder alle deine Schiffe platzieren.';
         return handlerInput.responseBuilder
             .speak(speechText)
             .withShouldEndSession(false)
