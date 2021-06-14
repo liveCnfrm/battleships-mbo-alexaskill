@@ -11,8 +11,8 @@
         "isRemovable": true,
         "filePath": "battleShipsMBO.js",
         "cursor": {
-          "lineNumber": 17,
-          "column": 33
+          "lineNumber": 16,
+          "column": 29
         },
         "config": {
           "runtime": "nodejs10.x",
@@ -28,7 +28,7 @@
             "config": {}
           }
         ],
-        "lastUpdated": 1623400524451
+        "lastUpdated": 1623660177701
       },
       "2aaa4441-e4c5-4d05-ad70-95477181fd77": {
         "id": "2aaa4441-e4c5-4d05-ad70-95477181fd77",
@@ -60,7 +60,7 @@
     "customTemplate": {
       "syntax": "JSON",
       "overrideDefault": false,
-      "dialect": null,
+      "dialect": "CloudFormation",
       "definitions": null
     },
     "envVariables": [
@@ -93,7 +93,8 @@
     "projectRegion": "us-east-1",
     "platform": "AWS",
     "language": "nodejs",
-    "platformRegions": {}
+    "platformRegions": {},
+    "lastSave": 1623661803553
   },
   "VCS_STATE": {
     "provider": "GitHub",
