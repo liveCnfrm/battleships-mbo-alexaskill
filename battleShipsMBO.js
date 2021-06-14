@@ -44,6 +44,24 @@ const PlaceShipHandler = {
     }
 };
 
+const ShootHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+            && handlerInput.requestEnvelope.request.intent.name === 'Shoot';
+    },
+    handle(handlerInput) {
+        // invoke custom logic of the handler
+        const row = Number(Alexa.getSlotValue(handlerInput.requestEnvelope, 'row'));
+        const column = Char(Alexa.getSlotValue(handlerInput.requestEnvelope, 'column'));
+
+        const speechText = "Okay, du hast auf die gegnerische Position " + column + " " + row + " geschossen";
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            .withShouldEndSession(false)
+            .getResponse();
+    }
+};
+
 const RotateHandler = {
     canHandle(handlerInput) {
         return handlerInput.requestEnvelope.request.type === 'IntentRequest'
@@ -84,7 +102,7 @@ const RestartHandler = {
     handle(handlerInput) {
         // invoke custom logic of the handler
         //const slotValue = Alexa.getSlotValue(handlerInput.requestEnvelope, 'slotName');
-        const speechText = 'Okay, ich starte das Spiel "Schiffe Versenken" von vorn.';
+        const speechText = 'Okay, ich starte das Spiel Schiffe Versenken von vorn.';
         return handlerInput.responseBuilder
             .speak(speechText)
             .withShouldEndSession(false)
@@ -108,22 +126,6 @@ const FinishPlacementHandler = {
     }
 };
 
-const ShootHandler = {
-    canHandle(handlerInput) {
-        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-            && handlerInput.requestEnvelope.request.intent.name === 'Shoot';
-    },
-    handle(handlerInput) {
-        // invoke custom logic of the handler
-        //const slotValue = Alexa.getSlotValue(handlerInput.requestEnvelope, 'slotName');
-        const speechText = 'This is the Shoot Intent Handler';
-        return handlerInput.responseBuilder
-            .speak(speechText)
-            .withShouldEndSession(false)
-            .getResponse();
-    }
-};
-
 const ErrorHandler = {
     canHandle(handlerInput) {
         return true;
@@ -132,7 +134,7 @@ const ErrorHandler = {
         console.log('Error handled: ' + JSON.stringify(error.message));
         // console.log('Original Request was:', JSON.stringify(handlerInput.requestEnvelope.request, null, 2));
 
-        const speechText = 'Entschuldigung, im Alexa Skill "Schiffe Versenken" ist ein Fehler aufgetreten.';
+        const speechText = 'Ups. Entschuldigung, im Alexa Skill Schiffe Versenken ist ein Fehler aufgetreten.';
         return handlerInput.responseBuilder
             .speak(speechText)
             .withShouldEndSession(false)
