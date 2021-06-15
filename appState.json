@@ -11,8 +11,8 @@
         "isRemovable": true,
         "filePath": "battleShipsMBO.js",
         "cursor": {
-          "lineNumber": 376,
-          "column": 42
+          "lineNumber": 181,
+          "column": 20
         },
         "config": {
           "runtime": "nodejs10.x",
@@ -94,7 +94,7 @@
     "platform": "AWS",
     "language": "nodejs",
     "platformRegions": {},
-    "lastSave": 1623661803553
+    "lastSave": 1623743356522
   },
   "VCS_STATE": {
     "provider": "GitHub",

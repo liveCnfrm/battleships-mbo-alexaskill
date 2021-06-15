@@ -39,44 +39,7 @@ const PlaceShipHandler = {
         const rowID = rowSLOT.resolutions.resolutionsPerAuthority[0].values[0].value.id;
         const columnID = columnSLOT.resolutions.resolutionsPerAuthority[0].values[0].value.id;
 
-
-        const https = require('http')
-
-        const data = JSON.stringify({
-            msg: 'PlaceShip from alexa'
-        })
-
-        var placementPath = new URL("/alexa/place?x=0&y=0");
-        placementPath.searchParams.set('x', columnID);
-        placementPath.searchParams.set('y', rowID);
-
-
-
-        const options = {
-            hostname: 'mboex.freeddns.org',
-            port: 443,
-            path: placementPath.toString(),
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Content-Length': data.length
-            }
-        }
-
-        const req = https.request(options, res => {
-            console.log(`${res}`)
-
-            res.on('data', d => {
-                process.stdout.write(d)
-            })
-        })
-
-        req.on('error', error => {
-            console.error(error)
-        })
-
-        req.write(data)
-        req.end()
+        httpAction("/alexa/place?x=0&y=0", 'PlaceShip from alexa', columnID, rowID);
 
         const speechText = "Das aktuelle Schiff wurde auf " + columnValue.toString() + " " + rowValue.toString() + " gesetzt.";
 
@@ -105,42 +68,7 @@ const ShootHandler = {
         const rowID = rowSLOT.resolutions.resolutionsPerAuthority[0].values[0].value.id;
         const columnID = columnSLOT.resolutions.resolutionsPerAuthority[0].values[0].value.id;
 
-
-        const https = require('http')
-
-        const data = JSON.stringify({
-            msg: 'Shoot from alexa'
-        })
-
-        var shootPath = new URL("/alexa/shoot?x=0&y=0");
-        shootPath.searchParams.set('x', columnID);
-        shootPath.searchParams.set('y', rowID);
-
-        const options = {
-            hostname: 'mboex.freeddns.org',
-            port: 443,
-            path: shootPath.toString(),
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Content-Length': data.length
-            }
-        }
-
-        const req = https.request(options, res => {
-            console.log(`${res}`)
-
-            res.on('data', d => {
-                process.stdout.write(d)
-            })
-        })
-
-        req.on('error', error => {
-            console.error(error)
-        })
-
-        req.write(data)
-        req.end()
+        httpAction("/alexa/shoot?x=0&y=0", 'Shoot from alexa', columnID, rowID);
 
         const speechText = 'Okay, du hast auf die gegnerische Position ' + columnValue.toString() + ' ' + rowValue.toString() + ' geschossen ';
         return handlerInput.responseBuilder
@@ -157,38 +85,7 @@ const RotateHandler = {
     },
     handle(handlerInput) {
 
-
-        const https = require('http')
-
-        const data = JSON.stringify({
-            msg: 'Rotate from alexa'
-        })
-
-        const options = {
-            hostname: 'mboex.freeddns.org',
-            port: 443,
-            path: '/alexa/rotate',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Content-Length': data.length
-            }
-        }
-
-        const req = https.request(options, res => {
-            console.log(`${res}`)
-
-            res.on('data', d => {
-                process.stdout.write(d)
-            })
-        })
-
-        req.on('error', error => {
-            console.error(error)
-        })
-
-        req.write(data)
-        req.end()
+        httpAction('/alexa/rotate', 'Rotate from alexa')
 
         const speechText = 'Das aktuelle Schiff wurde um 90 Grad gedreht.';
         return handlerInput.responseBuilder
@@ -205,39 +102,7 @@ const NextShipHandler = {
     },
     handle(handlerInput) {
 
-
-        const https = require('http')
-
-        const data = JSON.stringify({
-            msg: 'NextShip from alexa'
-        })
-
-        const options = {
-            hostname: 'mboex.freeddns.org',
-            port: 443,
-            path: '/alexa/next_ship',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Content-Length': data.length
-            }
-        }
-
-        const req = https.request(options, res => {
-            console.log(`${res}`)
-
-            res.on('data', d => {
-                process.stdout.write(d)
-            })
-        })
-
-        req.on('error', error => {
-            console.error(error)
-        })
-
-        req.write(data)
-        req.end()
-
+        httpAction('/alexa/next_ship', 'NextShip from alexa');
 
         const speechText = 'Das nächste Schiff wurde ausgewählt.';
         return handlerInput.responseBuilder
@@ -254,39 +119,7 @@ const RestartHandler = {
     },
     handle(handlerInput) {
 
-
-        const https = require('http')
-
-        const data = JSON.stringify({
-            msg: 'restart game from alexa'
-        })
-
-        const options = {
-            hostname: 'mboex.freeddns.org',
-            port: 443,
-            path: '/alexa/restart',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Content-Length': data.length
-            }
-        }
-
-        const req = https.request(options, res => {
-            console.log(`${res}`)
-
-            res.on('data', d => {
-                process.stdout.write(d)
-            })
-        })
-
-        req.on('error', error => {
-            console.error(error)
-        })
-
-        req.write(data)
-        req.end()
-
+        httpAction('/alexa/restart', 'restart game from alexa')
 
         const speechText = 'Okay, ich starte das Spiel Schiffe Versenken von vorn. Nun musst du erst wieder alle deine Schiffe platzieren.';
         return handlerInput.responseBuilder
@@ -303,38 +136,7 @@ const FinishPlacementHandler = {
     },
     handle(handlerInput) {
 
-
-        const https = require('http')
-
-        const data = JSON.stringify({
-            msg: 'FinishPlacement from alexa'
-        })
-
-        const options = {
-            hostname: 'mboex.freeddns.org',
-            port: 443,
-            path: '/alexa/finish_placement',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Content-Length': data.length
-            }
-        }
-
-        const req = https.request(options, res => {
-            console.log(`${res}`)
-
-            res.on('data', d => {
-                process.stdout.write(d)
-            })
-        })
-
-        req.on('error', error => {
-            console.error(error)
-        })
-
-        req.write(data)
-        req.end()
+        httpAction('/alexa/finish_placement', 'FinishPlacement from alexa');
 
         const speechText = 'Okay, alle Schiffe sind gesetzt. Jetzt kannst du auf eine Position des gegnerischen Spielfelds schießen. Sage einfach, Schieße auf Zeile Spalte.';
         return handlerInput.responseBuilder
@@ -366,38 +168,7 @@ const LaunchRequestHandler = {
     },
     handle(handlerInput) {
 
-        const https = require('http')
-
-        const data = JSON.stringify({
-            msg: 'hello from alexa'
-        })
-
-        const options = {
-            hostname: 'mboex.freeddns.org',
-            port: 443,
-            path: '/alexa/register',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Content-Length': data.length
-            }
-        }
-
-        const req = https.request(options, res => {
-            console.log(`${res}`)
-
-            res.on('data', d => {
-                process.stdout.write(d)
-            })
-        })
-
-        req.on('error', error => {
-            console.error(error)
-        })
-
-        req.write(data)
-        req.end()
-
+        httpAction('/alexa/register', 'hello from alexa')
 
         const speechText = "Willkommen bei Schiffe Versenken in M B O. Zunächst musst du deine Schiffe auf deinem Spielfeld platzieren. Du siehst auf der Spielanzeige dein aktuelles Schiff und dessen Rotation. Um ein Schiff um 90 Grad zu rotieren, sage einfach, Schiff drehen. Um das Schiff zu platzieren, sage einfach, platziere Schiff auf Zeile Spalte. Wenn dir die finale Position deines aktuellen Schiffes gefällt, sag einfach, nächstes Schiff. Wenn du alle Schiffe gesetzt hast, sag einfach, fertig.";
         return handlerInput.responseBuilder
@@ -406,3 +177,46 @@ const LaunchRequestHandler = {
             .getResponse();
     }
 };
+
+function httpAction(actionPath, message, x = 0, y = 0) {
+
+    if (x > 0 && y > 0) {
+        var positionPath = new URL(actionpath);
+        positionPath.searchParams.set('x', columnID);
+        positionPath.searchParams.set('y', rowID);
+
+        actionPath = positionPath.toString();
+    }
+
+    const https = require('http')
+
+    const data = JSON.stringify({
+        msg: message
+    })
+
+    const options = {
+        hostname: 'mboex.freeddns.org',
+        port: 443,
+        path: actionPath,
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': data.length
+        }
+    }
+
+    const req = https.request(options, res => {
+        console.log(`${res}`)
+
+        res.on('data', d => {
+            process.stdout.write(d)
+        })
+    })
+
+    req.on('error', error => {
+        console.error(error)
+    })
+
+    req.write(data)
+    req.end()
+}
