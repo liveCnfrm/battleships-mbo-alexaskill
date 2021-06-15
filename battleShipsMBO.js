@@ -1,21 +1,6 @@
 const Alexa = require('ask-sdk');
 let skill;
 
-
-//get response data from application
-const http = require('http');
-
-http.get('http://battleshipsmbo.ddns.net/', (resp) => {
-    let data = '';
-    // A chunk of data has been received.
-    resp.on('data', (chunk) => {
-        data += chunk;
-    });
-}).on("error", (err) => {
-    console.log("Error: " + err.message);
-});
-
-
 exports.handler = async function (event, context) {
     //console.log('REQUEST ' + JSON.stringify(event));
     if (!skill) {
@@ -32,10 +17,7 @@ exports.handler = async function (event, context) {
             ).create();
     }
 
-
-
     const response = await skill.invoke(event, context);
-    //console.log('RESPONSE :' + JSON.stringify(response));
     return response;
 };
 
@@ -48,8 +30,15 @@ const PlaceShipHandler = {
     },
     handle(handlerInput) {
 
-        const row = Alexa.getSlotValue(handlerInput.requestEnvelope, 'row');
-        const column = Alexa.getSlotValue(handlerInput.requestEnvelope, 'column');
+        const rowValue = Alexa.getSlotValue(handlerInput.requestEnvelope, 'row');
+        const columnValue = Alexa.getSlotValue(handlerInput.requestEnvelope, 'column');
+
+        const rowSLOT = Alexa.getSlot(handlerInput.requestEnvelope, 'row');
+        const columnSLOT = Alexa.getSlot(handlerInput.requestEnvelope, 'column');
+
+        const rowID = rowSLOT.resolutions.resolutionsPerAuthority[0].values[0].value.id;
+        const columnID = columnSLOT.resolutions.resolutionsPerAuthority[0].values[0].value.id;
+
 
         const https = require('http')
 
@@ -57,15 +46,16 @@ const PlaceShipHandler = {
             msg: 'PlaceShip from alexa'
         })
 
-        var placementPath = new URL("/alexa/place_ship?x=0&y=0");
-        placementPath.searchParams.set('x', column);
-        placementPath.searchParams.set('y', row);
+        var placementPath = new URL("/alexa/place?x=0&y=0");
+        placementPath.searchParams.set('x', columnID);
+        placementPath.searchParams.set('y', rowID);
+
 
 
         const options = {
-            hostname: 'battleshipsmbo.ddns.net',
+            hostname: 'mboex.freeddns.org',
             port: 443,
-            path: placementPath,
+            path: placementPath.toString(),
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -88,7 +78,7 @@ const PlaceShipHandler = {
         req.write(data)
         req.end()
 
-        const speechText = "Das aktuelle Schiff wurde auf " + column + " " + row + " gesetzt.";
+        const speechText = "Das aktuelle Schiff wurde auf " + columnValue.toString() + " " + rowValue.toString() + " gesetzt.";
 
         return handlerInput.responseBuilder
             .speak(speechText)
@@ -97,30 +87,39 @@ const PlaceShipHandler = {
     }
 };
 
+
 const ShootHandler = {
     canHandle(handlerInput) {
         return handlerInput.requestEnvelope.request.type === 'IntentRequest'
             && handlerInput.requestEnvelope.request.intent.name === 'Shoot';
     },
     handle(handlerInput) {
-        const row = Alexa.getSlotValue(handlerInput.requestEnvelope, 'row');
-        const column = Alexa.getSlotValue(handlerInput.requestEnvelope, 'column');
+
+
+        const rowValue = Alexa.getSlotValue(handlerInput.requestEnvelope, 'row');
+        const columnValue = Alexa.getSlotValue(handlerInput.requestEnvelope, 'column');
+
+        const rowSLOT = Alexa.getSlot(handlerInput.requestEnvelope, 'row');
+        const columnSLOT = Alexa.getSlot(handlerInput.requestEnvelope, 'column');
+
+        const rowID = rowSLOT.resolutions.resolutionsPerAuthority[0].values[0].value.id;
+        const columnID = columnSLOT.resolutions.resolutionsPerAuthority[0].values[0].value.id;
+
 
         const https = require('http')
 
         const data = JSON.stringify({
-            msg: 'PlaceShip from alexa'
+            msg: 'Shoot from alexa'
         })
 
         var shootPath = new URL("/alexa/shoot?x=0&y=0");
-        shootPath.searchParams.set('x', column);
-        shootPath.searchParams.set('y', row);
-
+        shootPath.searchParams.set('x', columnID);
+        shootPath.searchParams.set('y', rowID);
 
         const options = {
-            hostname: 'battleshipsmbo.ddns.net',
+            hostname: 'mboex.freeddns.org',
             port: 443,
-            path: shootPath,
+            path: shootPath.toString(),
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -143,7 +142,7 @@ const ShootHandler = {
         req.write(data)
         req.end()
 
-        const speechText = shootPath + " Okay, du hast auf die gegnerische Position " + column + " " + row + " geschossen";
+        const speechText = 'Okay, du hast auf die gegnerische Position ' + columnValue.toString() + ' ' + rowValue.toString() + ' geschossen ';
         return handlerInput.responseBuilder
             .speak(speechText)
             .withShouldEndSession(false)
@@ -166,7 +165,7 @@ const RotateHandler = {
         })
 
         const options = {
-            hostname: 'battleshipsmbo.ddns.net',
+            hostname: 'mboex.freeddns.org',
             port: 443,
             path: '/alexa/rotate',
             method: 'POST',
@@ -214,7 +213,7 @@ const NextShipHandler = {
         })
 
         const options = {
-            hostname: 'battleshipsmbo.ddns.net',
+            hostname: 'mboex.freeddns.org',
             port: 443,
             path: '/alexa/next_ship',
             method: 'POST',
@@ -240,7 +239,7 @@ const NextShipHandler = {
         req.end()
 
 
-        const speechText = 'Das nächste Schiff ist ausgewählt';
+        const speechText = 'Das nächste Schiff wurde ausgewählt.';
         return handlerInput.responseBuilder
             .speak(speechText)
             .withShouldEndSession(false)
@@ -263,7 +262,7 @@ const RestartHandler = {
         })
 
         const options = {
-            hostname: 'battleshipsmbo.ddns.net',
+            hostname: 'mboex.freeddns.org',
             port: 443,
             path: '/alexa/restart',
             method: 'POST',
@@ -289,7 +288,7 @@ const RestartHandler = {
         req.end()
 
 
-        const speechText = 'Okay, ich starte das Spiel Schiffe Versenken von vorn. Nun kannst du musst du erst wieder alle deine Schiffe platzieren.';
+        const speechText = 'Okay, ich starte das Spiel Schiffe Versenken von vorn. Nun musst du erst wieder alle deine Schiffe platzieren.';
         return handlerInput.responseBuilder
             .speak(speechText)
             .withShouldEndSession(false)
@@ -312,7 +311,7 @@ const FinishPlacementHandler = {
         })
 
         const options = {
-            hostname: 'battleshipsmbo.ddns.net',
+            hostname: 'mboex.freeddns.org',
             port: 443,
             path: '/alexa/finish_placement',
             method: 'POST',
@@ -374,7 +373,7 @@ const LaunchRequestHandler = {
         })
 
         const options = {
-            hostname: 'battleshipsmbo.ddns.net',
+            hostname: 'mboex.freeddns.org',
             port: 443,
             path: '/alexa/register',
             method: 'POST',
