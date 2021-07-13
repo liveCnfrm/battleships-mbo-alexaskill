@@ -42,13 +42,25 @@ const PlaceShipHandler = {
         const rowID = rowSLOT.resolutions.resolutionsPerAuthority[0].values[0].value.id;
         const columnID = columnSLOT.resolutions.resolutionsPerAuthority[0].values[0].value.id;
 
-        shipCount--;
+        var speechText = '';
 
 
-        //httpAction("/alexa/place?x=0&y=0", 'PlaceShip from alexa', columnID, rowID);
+        if (shipCount <= 0) {
+            speechText = "Es ist kein Schiff mehr übrig, dass du setzen könntest. Sag einfach: fertig, um das Spiel zu starten";
 
-        const speechText = "Das aktuelle Schiff wurde auf " + columnValue.toString() + " " + rowValue.toString() + " gesetzt. Du musst noch " + shipCount.toString() + " weitere Schiffe zu setzen, bevor du das Spiel starten kannst.";
+        }
+        else {
 
+            if (battleStarted) {
+                speechText = "Du befindest dich im Spiel gegen deinen Gegner. Du kannst jetzt kein Schiff auf dem Spielfeld platzieren!";
+            }
+            else {
+
+                //httpAction("/alexa/place?x=0&y=0", 'PlaceShip from alexa', columnID, rowID);
+
+                speechText = "Das aktuelle Schiff wurde auf " + columnValue.toString() + " " + rowValue.toString() + " gesetzt. " + "Wenn du mit der Position und der Rotation des Schiffs zufrieden bist, sag einfach: nächstes Schiff.";
+            }
+        }
         return handlerInput.responseBuilder
             .speak(speechText)
             .withShouldEndSession(false)
@@ -76,7 +88,14 @@ const ShootHandler = {
 
         //httpAction("/alexa/shoot?x=0&y=0", 'Shoot from alexa', columnID, rowID);
 
-        const speechText = 'Okay, du hast auf die gegnerische Position ' + columnValue.toString() + ' ' + rowValue.toString() + ' geschossen ';
+        var speechText = '';
+
+        if (!battleStarted) {
+            speechText = "Du befindest dich noch nicht im Spiel gegen deinen Gegner. Du musst erst alle deine Schiffe auf dem Spielfeld platzieren!";
+        }
+        else {
+            speechText = 'Okay, du hast auf die gegnerische Position ' + columnValue.toString() + ' ' + rowValue.toString() + ' geschossen ';
+        }
         return handlerInput.responseBuilder
             .speak(speechText)
             .withShouldEndSession(false)
@@ -93,7 +112,16 @@ const RotateHandler = {
 
         //httpAction('/alexa/rotate', 'Rotate from alexa')
 
-        const speechText = 'Das aktuelle Schiff wurde um 90 Grad gedreht.';
+        var speechText = '';
+
+        if (battleStarted) {
+            speechText = "Du befindest dich bereits im Spiel gegen deinen Gegner. Du kannst jetzt deine Schiffe nicht mehr rotieren"
+        }
+        else {
+
+            speechText = 'Das aktuelle Schiff wurde um 90 Grad gedreht.';
+        }
+
         return handlerInput.responseBuilder
             .speak(speechText)
             .withShouldEndSession(false)
@@ -110,7 +138,19 @@ const NextShipHandler = {
 
         //httpAction('/alexa/next_ship', 'NextShip from alexa');
 
-        const speechText = 'Das nächste Schiff wurde ausgewählt.';
+        var speechText = '';
+
+        if (shipCount <= 0) {
+            speechText = "Es ist kein Schiff mehr übrig, dass du setzen könntest. Sag einfach: fertig, um das Spiel zu starten";
+            if (battleStarted) {
+                speechText = "Du befindest dich bereits im Spiel gegen deinen Gegner. Du kannst jetzt kein Schiff zum Setzen auswählen!";
+            }
+
+        }
+        else {
+            shipCount--;
+            speechText = 'Das nächste Schiff wurde ausgewählt.' + "Du hast noch " + shipCount.toString() + " Schiffe übrig.";
+        }
         return handlerInput.responseBuilder
             .speak(speechText)
             .withShouldEndSession(false)
@@ -130,7 +170,7 @@ const RestartHandler = {
 
         //httpAction('/alexa/restart', 'restart game from alexa')
 
-        const speechText = 'Okay, ich starte das Spiel Schiffe Versenken von vorn. Nun musst du erst wieder alle deine Schiffe platzieren.';
+        var speechText = 'Okay, ich starte das Spiel Schiffe Versenken von vorn. Nun musst du erst wieder alle deine Schiffe platzieren.';
 
 
         return handlerInput.responseBuilder
@@ -147,17 +187,21 @@ const FinishPlacementHandler = {
     },
     handle(handlerInput) {
 
-       
+        var speechText = '';
 
+        if (shipCount <= 0) {
+            if (battleStarted) {
+                speechText = "Du befindest bereits im Spiel gegen deinen Gegner. Sage einfach: Neustart, wenn du von vorne beginnen möchtest";
+            }
+            else {
 
-                    
+                speechText = 'Okay, alle Schiffe sind gesetzt. Jetzt kannst du auf eine Position des gegnerischen Spielfelds schießen. Sage einfach, Schieße auf Zeile Spalte.';
+                battleStarted = true;
 
-        if(shipCount<=0) {
-            const speechText = 'Okay, alle Schiffe sind gesetzt. Jetzt kannst du auf eine Position des gegnerischen Spielfelds schießen. Sage einfach, Schieße auf Zeile Spalte.';
-             battleStarted = true;
-             //httpAction('/alexa/finish_placement', 'FinishPlacement from alexa');
+                //httpAction('/alexa/finish_placement', 'FinishPlacement from alexa');
+            }
         } else {
-             const speechText = 'Es sind noch ' + shipCount.toString() + ' Schiffe übrig. Damit das Spiel gestartet werden kann müssen zunächst alle deiner Schiffe auf dem Spielfeld gesetzt sein.'       
+            speechText = 'Derzeit sind ' + shipCount.toString() + ' Schiffe noch nicht gesetzt. Damit das Spiel gestartet werden kann müssen zunächst alle deiner Schiffe auf dem Spielfeld gesetzt sein.'
         }
 
         return handlerInput.responseBuilder
@@ -175,7 +219,7 @@ const ErrorHandler = {
         console.log('Error handled: ' + JSON.stringify(error.message));
         // console.log('Original Request was:', JSON.stringify(handlerInput.requestEnvelope.request, null, 2));
 
-        const speechText = 'Ups. Entschuldigung, im Alexa Skill Schiffe Versenken ist ein Fehler aufgetreten.';
+        var speechText = 'Ups. Entschuldigung, im Alexa Skill Schiffe Versenken ist ein Fehler aufgetreten.';
         return handlerInput.responseBuilder
             .speak(speechText)
             .withShouldEndSession(false)
@@ -189,9 +233,9 @@ const LaunchRequestHandler = {
     },
     handle(handlerInput) {
 
-       //httpAction('/alexa/register', 'hello from alexa')
+        //httpAction('/alexa/register', 'hello from alexa')
 
-        const speechText = "Willkommen bei Schiffe Versenken in M B O. Zunächst musst du deine Schiffe auf deinem Spielfeld platzieren. Du siehst auf der Spielanzeige dein aktuelles Schiff und dessen Rotation. Um ein Schiff um 90 Grad zu rotieren, sage einfach, Schiff drehen. Um das Schiff zu platzieren, sage einfach, platziere Schiff auf Zeile Spalte. Wenn dir die finale Position deines aktuellen Schiffes gefällt, sag einfach, nächstes Schiff. Wenn du alle Schiffe gesetzt hast, sag einfach, fertig.";
+        var speechText = "Willkommen bei Schiffe Versenken. Zunächst musst du deine Schiffe auf deinem Spielfeld platzieren. Du siehst auf der Spielanzeige dein aktuelles Schiff und dessen Rotation. Um ein Schiff um 90 Grad zu rotieren, sage einfach, Schiff drehen. Um das Schiff zu platzieren, sage einfach, platziere Schiff auf Zeile Spalte. Wenn dir die finale Position deines aktuellen Schiffes gefällt, sag einfach, nächstes Schiff. Wenn du alle Schiffe gesetzt hast, sag einfach, fertig.";
         return handlerInput.responseBuilder
             .speak(speechText)
             .withShouldEndSession(false)
