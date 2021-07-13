@@ -39,7 +39,7 @@ const PlaceShipHandler = {
         const rowID = rowSLOT.resolutions.resolutionsPerAuthority[0].values[0].value.id;
         const columnID = columnSLOT.resolutions.resolutionsPerAuthority[0].values[0].value.id;
 
-        httpAction("/alexa/place?x=0&y=0", 'PlaceShip from alexa', columnID, rowID);
+        //httpAction("/alexa/place?x=0&y=0", 'PlaceShip from alexa', columnID, rowID);
 
         const speechText = "Das aktuelle Schiff wurde auf " + columnValue.toString() + " " + rowValue.toString() + " gesetzt.";
 
@@ -68,7 +68,7 @@ const ShootHandler = {
         const rowID = rowSLOT.resolutions.resolutionsPerAuthority[0].values[0].value.id;
         const columnID = columnSLOT.resolutions.resolutionsPerAuthority[0].values[0].value.id;
 
-        httpAction("/alexa/shoot?x=0&y=0", 'Shoot from alexa', columnID, rowID);
+        //httpAction("/alexa/shoot?x=0&y=0", 'Shoot from alexa', columnID, rowID);
 
         const speechText = 'Okay, du hast auf die gegnerische Position ' + columnValue.toString() + ' ' + rowValue.toString() + ' geschossen ';
         return handlerInput.responseBuilder
@@ -85,7 +85,7 @@ const RotateHandler = {
     },
     handle(handlerInput) {
 
-        httpAction('/alexa/rotate', 'Rotate from alexa')
+        //httpAction('/alexa/rotate', 'Rotate from alexa')
 
         const speechText = 'Das aktuelle Schiff wurde um 90 Grad gedreht.';
         return handlerInput.responseBuilder
@@ -102,7 +102,7 @@ const NextShipHandler = {
     },
     handle(handlerInput) {
 
-        httpAction('/alexa/next_ship', 'NextShip from alexa');
+        //httpAction('/alexa/next_ship', 'NextShip from alexa');
 
         const speechText = 'Das nächste Schiff wurde ausgewählt.';
         return handlerInput.responseBuilder
@@ -119,7 +119,7 @@ const RestartHandler = {
     },
     handle(handlerInput) {
 
-        httpAction('/alexa/restart', 'restart game from alexa')
+        //httpAction('/alexa/restart', 'restart game from alexa')
 
         const speechText = 'Okay, ich starte das Spiel Schiffe Versenken von vorn. Nun musst du erst wieder alle deine Schiffe platzieren.';
         return handlerInput.responseBuilder
@@ -136,7 +136,7 @@ const FinishPlacementHandler = {
     },
     handle(handlerInput) {
 
-        httpAction('/alexa/finish_placement', 'FinishPlacement from alexa');
+        //httpAction('/alexa/finish_placement', 'FinishPlacement from alexa');
 
         const speechText = 'Okay, alle Schiffe sind gesetzt. Jetzt kannst du auf eine Position des gegnerischen Spielfelds schießen. Sage einfach, Schieße auf Zeile Spalte.';
         return handlerInput.responseBuilder
@@ -168,7 +168,7 @@ const LaunchRequestHandler = {
     },
     handle(handlerInput) {
 
-        httpAction('/alexa/register', 'hello from alexa')
+       //httpAction('/alexa/register', 'hello from alexa')
 
         const speechText = "Willkommen bei Schiffe Versenken in M B O. Zunächst musst du deine Schiffe auf deinem Spielfeld platzieren. Du siehst auf der Spielanzeige dein aktuelles Schiff und dessen Rotation. Um ein Schiff um 90 Grad zu rotieren, sage einfach, Schiff drehen. Um das Schiff zu platzieren, sage einfach, platziere Schiff auf Zeile Spalte. Wenn dir die finale Position deines aktuellen Schiffes gefällt, sag einfach, nächstes Schiff. Wenn du alle Schiffe gesetzt hast, sag einfach, fertig.";
         return handlerInput.responseBuilder

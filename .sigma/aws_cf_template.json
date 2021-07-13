@@ -39,7 +39,7 @@
         "MemorySize": 128,
         "Handler": "battleShipsMBO.handler",
         "Timeout": 60,
-        "Runtime": "nodejs10.x",
+        "Runtime": "nodejs14.x",
         "Layers": [],
         "TracingConfig": {
           "Mode": "PassThrough"

@@ -15,7 +15,7 @@
           "column": 20
         },
         "config": {
-          "runtime": "nodejs10.x",
+          "runtime": "nodejs14.x",
           "handler": "handler",
           "timeout": 60,
           "memory": 128,
@@ -28,7 +28,7 @@
             "config": {}
           }
         ],
-        "lastUpdated": 1623738236099
+        "lastUpdated": 1626166266094
       },
       "2aaa4441-e4c5-4d05-ad70-95477181fd77": {
         "id": "2aaa4441-e4c5-4d05-ad70-95477181fd77",
@@ -86,7 +86,7 @@
     }
   },
   "PROJECT_META": {
-    "sigmaVersion": "1.8.0",
+    "sigmaVersion": "1.9.1",
     "projectName": "battleShipsMBO",
     "projectDescription": "",
     "projectVersion": "1.0.0",
