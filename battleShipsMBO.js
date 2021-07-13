@@ -1,6 +1,9 @@
 const Alexa = require('ask-sdk');
 let skill;
 
+var shipCount = 5;
+var battleStarted = false;
+
 exports.handler = async function (event, context) {
     //console.log('REQUEST ' + JSON.stringify(event));
     if (!skill) {
@@ -39,9 +42,12 @@ const PlaceShipHandler = {
         const rowID = rowSLOT.resolutions.resolutionsPerAuthority[0].values[0].value.id;
         const columnID = columnSLOT.resolutions.resolutionsPerAuthority[0].values[0].value.id;
 
+        shipCount--;
+
+
         //httpAction("/alexa/place?x=0&y=0", 'PlaceShip from alexa', columnID, rowID);
 
-        const speechText = "Das aktuelle Schiff wurde auf " + columnValue.toString() + " " + rowValue.toString() + " gesetzt.";
+        const speechText = "Das aktuelle Schiff wurde auf " + columnValue.toString() + " " + rowValue.toString() + " gesetzt. Du musst noch " + shipCount.toString() + " weitere Schiffe zu setzen, bevor du das Spiel starten kannst.";
 
         return handlerInput.responseBuilder
             .speak(speechText)
@@ -119,9 +125,14 @@ const RestartHandler = {
     },
     handle(handlerInput) {
 
+        battleStarted = false;
+        shipCount = 5;
+
         //httpAction('/alexa/restart', 'restart game from alexa')
 
         const speechText = 'Okay, ich starte das Spiel Schiffe Versenken von vorn. Nun musst du erst wieder alle deine Schiffe platzieren.';
+
+
         return handlerInput.responseBuilder
             .speak(speechText)
             .withShouldEndSession(false)
@@ -136,9 +147,19 @@ const FinishPlacementHandler = {
     },
     handle(handlerInput) {
 
-        //httpAction('/alexa/finish_placement', 'FinishPlacement from alexa');
+       
 
-        const speechText = 'Okay, alle Schiffe sind gesetzt. Jetzt kannst du auf eine Position des gegnerischen Spielfelds schießen. Sage einfach, Schieße auf Zeile Spalte.';
+
+                    
+
+        if(shipCount<=0) {
+            const speechText = 'Okay, alle Schiffe sind gesetzt. Jetzt kannst du auf eine Position des gegnerischen Spielfelds schießen. Sage einfach, Schieße auf Zeile Spalte.';
+             battleStarted = true;
+             //httpAction('/alexa/finish_placement', 'FinishPlacement from alexa');
+        } else {
+             const speechText = 'Es sind noch ' + shipCount.toString() + ' Schiffe übrig. Damit das Spiel gestartet werden kann müssen zunächst alle deiner Schiffe auf dem Spielfeld gesetzt sein.'       
+        }
+
         return handlerInput.responseBuilder
             .speak(speechText)
             .withShouldEndSession(false)

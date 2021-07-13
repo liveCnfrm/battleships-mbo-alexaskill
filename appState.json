@@ -11,8 +11,8 @@
         "isRemovable": true,
         "filePath": "battleShipsMBO.js",
         "cursor": {
-          "lineNumber": 16,
-          "column": 29
+          "lineNumber": 50,
+          "column": 135
         },
         "config": {
           "runtime": "nodejs14.x",
