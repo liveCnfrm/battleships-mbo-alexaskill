@@ -4,6 +4,7 @@ let skill;
 var shipCount = 5;
 var battleStarted = false;
 
+
 exports.handler = async function (event, context) {
     //console.log('REQUEST ' + JSON.stringify(event));
     if (!skill) {
@@ -46,19 +47,25 @@ const PlaceShipHandler = {
 
 
         if (shipCount <= 0) {
-            speechText = "Es ist kein Schiff mehr übrig, dass du setzen könntest. Sag einfach: fertig, um das Spiel zu starten";
+            speechText = 'Es ist kein Schiff mehr übrig, dass du setzen könntest. Sag einfach: fertig, um das Spiel zu starten';
 
         }
         else {
 
             if (battleStarted) {
-                speechText = "Du befindest dich im Spiel gegen deinen Gegner. Du kannst jetzt kein Schiff auf dem Spielfeld platzieren!";
+                speechText = 'Du befindest dich im Spiel gegen deinen Gegner. Du kannst jetzt kein Schiff auf dem Spielfeld platzieren!';
             }
             else {
 
-                //httpAction("/alexa/place?x=0&y=0", 'PlaceShip from alexa', columnID, rowID);
+                //TODO
 
-                speechText = "Das aktuelle Schiff wurde auf " + columnValue.toString() + " " + rowValue.toString() + " gesetzt. " + "Wenn du mit der Position und der Rotation des Schiffs zufrieden bist, sag einfach: nächstes Schiff.";
+                //speechText = columnID.toString();
+
+                //httpAction('/alexa/place', 'PlaceShip from alexa', columnID, rowID);
+                httpAction('/alexa/place', 'PlaceShip from alexa', 1, 2);
+
+
+                speechText = 'Das aktuelle Schiff wurde auf ' + columnValue.toString() + ' ' + rowValue.toString() + ' gesetzt. ' + 'Wenn du mit der Position und der Rotation des Schiffs zufrieden bist, sag einfach: nächstes Schiff.';
             }
         }
         return handlerInput.responseBuilder
@@ -86,12 +93,12 @@ const ShootHandler = {
         const rowID = rowSLOT.resolutions.resolutionsPerAuthority[0].values[0].value.id;
         const columnID = columnSLOT.resolutions.resolutionsPerAuthority[0].values[0].value.id;
 
-        //httpAction("/alexa/shoot?x=0&y=0", 'Shoot from alexa', columnID, rowID);
+        //httpAction('/alexa/shoot', 'Shoot from alexa', columnID, rowID);
 
         var speechText = '';
 
         if (!battleStarted) {
-            speechText = "Du befindest dich noch nicht im Spiel gegen deinen Gegner. Du musst erst alle deine Schiffe auf dem Spielfeld platzieren!";
+            speechText = 'Du befindest dich noch nicht im Spiel gegen deinen Gegner. Du musst erst alle deine Schiffe auf dem Spielfeld platzieren!';
         }
         else {
             speechText = 'Okay, du hast auf die gegnerische Position ' + columnValue.toString() + ' ' + rowValue.toString() + ' geschossen ';
@@ -115,7 +122,7 @@ const RotateHandler = {
         var speechText = '';
 
         if (battleStarted) {
-            speechText = "Du befindest dich bereits im Spiel gegen deinen Gegner. Du kannst jetzt deine Schiffe nicht mehr rotieren"
+            speechText = 'Du befindest dich bereits im Spiel gegen deinen Gegner. Du kannst jetzt deine Schiffe nicht mehr rotieren'
         }
         else {
 
@@ -141,15 +148,15 @@ const NextShipHandler = {
         var speechText = '';
 
         if (shipCount <= 0) {
-            speechText = "Es ist kein Schiff mehr übrig, dass du setzen könntest. Sag einfach: fertig, um das Spiel zu starten";
+            speechText = 'Es ist kein Schiff mehr übrig, dass du setzen könntest. Sag einfach: fertig, um das Spiel zu starten';
             if (battleStarted) {
-                speechText = "Du befindest dich bereits im Spiel gegen deinen Gegner. Du kannst jetzt kein Schiff zum Setzen auswählen!";
+                speechText = 'Du befindest dich bereits im Spiel gegen deinen Gegner. Du kannst jetzt kein Schiff zum Setzen auswählen!';
             }
 
         }
         else {
             shipCount--;
-            speechText = 'Das nächste Schiff wurde ausgewählt.' + "Du hast noch " + shipCount.toString() + " Schiffe übrig.";
+            speechText = 'Das nächste Schiff wurde ausgewählt.' + 'Du hast noch ' + shipCount.toString() + ' Schiffe übrig.';
         }
         return handlerInput.responseBuilder
             .speak(speechText)
@@ -191,7 +198,7 @@ const FinishPlacementHandler = {
 
         if (shipCount <= 0) {
             if (battleStarted) {
-                speechText = "Du befindest bereits im Spiel gegen deinen Gegner. Sage einfach: Neustart, wenn du von vorne beginnen möchtest";
+                speechText = 'Du befindest bereits im Spiel gegen deinen Gegner. Sage einfach: Neustart, wenn du von vorne beginnen möchtest';
             }
             else {
 
@@ -233,9 +240,9 @@ const LaunchRequestHandler = {
     },
     handle(handlerInput) {
 
-        //httpAction('/alexa/register', 'hello from alexa')
+        httpAction('/alexa/register', 'Hello from Alexa');
 
-        var speechText = "Willkommen bei Schiffe Versenken. Zunächst musst du deine Schiffe auf deinem Spielfeld platzieren. Du siehst auf der Spielanzeige dein aktuelles Schiff und dessen Rotation. Um ein Schiff um 90 Grad zu rotieren, sage einfach, Schiff drehen. Um das Schiff zu platzieren, sage einfach, platziere Schiff auf Zeile Spalte. Wenn dir die finale Position deines aktuellen Schiffes gefällt, sag einfach, nächstes Schiff. Wenn du alle Schiffe gesetzt hast, sag einfach, fertig.";
+        var speechText = 'Willkommen bei Schiffe Versenken. Zunächst musst du deine Schiffe auf deinem Spielfeld platzieren. Du siehst auf der Spielanzeige dein aktuelles Schiff und dessen Rotation. Um ein Schiff um 90 Grad zu rotieren, sage einfach, Schiff drehen. Um das Schiff zu platzieren, sage einfach, platziere Schiff auf Zeile Spalte. Wenn dir die finale Position deines aktuellen Schiffes gefällt, sag einfach, nächstes Schiff. Wenn du alle Schiffe gesetzt hast, sag einfach, fertig.';
         return handlerInput.responseBuilder
             .speak(speechText)
             .withShouldEndSession(false)
@@ -243,35 +250,33 @@ const LaunchRequestHandler = {
     }
 };
 
-function httpAction(actionPath, message, x = 0, y = 0) {
 
-    if (x > 0 && y > 0) {
-        var positionPath = new URL(actionpath);
-        positionPath.searchParams.set('x', columnID);
-        positionPath.searchParams.set('y', rowID);
+function httpAction(actionPath, message, x = -1, y = -1) {
 
-        actionPath = positionPath.toString();
+    var pathURL = actionPath;
+
+    // if shooting or placing
+    if (x > -1 && y > -1) {
+        pathURL = pathURL + "?x=" + x.toString() + "&y=" + y.toString();
     }
 
-    const https = require('http')
+    console.log(pathURL);
+
+    const https = require('https')
 
     const data = JSON.stringify({
         msg: message
     })
 
     const options = {
-        hostname: 'mboex.freeddns.org',
-        port: 443,
-        path: actionPath,
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': data.length
-        }
+        hostname: 'ptsv2.com/t/mboTest',
+        port: 80,
+        method: 'GET',
+        path: pathURL
     }
 
     const req = https.request(options, res => {
-        console.log(`${res}`)
+        console.log('statusCode: ${res.statusCode}')
 
         res.on('data', d => {
             process.stdout.write(d)
@@ -282,6 +287,5 @@ function httpAction(actionPath, message, x = 0, y = 0) {
         console.error(error)
     })
 
-    req.write(data)
     req.end()
 }
