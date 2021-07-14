@@ -56,7 +56,7 @@ const PlaceShipHandler = {
             }
             else {
 
-                httpAction("/alexa/place?x=0&y=0", 'PlaceShip from alexa', columnID, rowID);
+                //httpAction("/alexa/place?x=0&y=0", 'PlaceShip from alexa', columnID, rowID);
 
                 speechText = "Das aktuelle Schiff wurde auf " + columnValue.toString() + " " + rowValue.toString() + " gesetzt. " + "Wenn du mit der Position und der Rotation des Schiffs zufrieden bist, sag einfach: nächstes Schiff.";
             }
@@ -86,7 +86,7 @@ const ShootHandler = {
         const rowID = rowSLOT.resolutions.resolutionsPerAuthority[0].values[0].value.id;
         const columnID = columnSLOT.resolutions.resolutionsPerAuthority[0].values[0].value.id;
 
-        httpAction("/alexa/shoot?x=0&y=0", 'Shoot from alexa', columnID, rowID);
+        //httpAction("/alexa/shoot?x=0&y=0", 'Shoot from alexa', columnID, rowID);
 
         var speechText = '';
 
@@ -110,7 +110,7 @@ const RotateHandler = {
     },
     handle(handlerInput) {
 
-        httpAction('/alexa/rotate', 'Rotate from alexa')
+        //httpAction('/alexa/rotate', 'Rotate from alexa')
 
         var speechText = '';
 
@@ -136,7 +136,7 @@ const NextShipHandler = {
     },
     handle(handlerInput) {
 
-        httpAction('/alexa/next_ship', 'NextShip from alexa');
+        //httpAction('/alexa/next_ship', 'NextShip from alexa');
 
         var speechText = '';
 
@@ -168,7 +168,7 @@ const RestartHandler = {
         battleStarted = false;
         shipCount = 5;
 
-        httpAction('/alexa/restart', 'restart game from alexa')
+        //httpAction('/alexa/restart', 'restart game from alexa')
 
         var speechText = 'Okay, ich starte das Spiel Schiffe Versenken von vorn. Nun musst du erst wieder alle deine Schiffe platzieren.';
 
@@ -198,7 +198,7 @@ const FinishPlacementHandler = {
                 speechText = 'Okay, alle Schiffe sind gesetzt. Jetzt kannst du auf eine Position des gegnerischen Spielfelds schießen. Sage einfach, Schieße auf Zeile Spalte.';
                 battleStarted = true;
 
-                httpAction('/alexa/finish_placement', 'FinishPlacement from alexa');
+                //httpAction('/alexa/finish_placement', 'FinishPlacement from alexa');
             }
         } else {
             speechText = 'Derzeit sind ' + shipCount.toString() + ' Schiffe noch nicht gesetzt. Damit das Spiel gestartet werden kann müssen zunächst alle deiner Schiffe auf dem Spielfeld gesetzt sein.'
@@ -217,6 +217,7 @@ const ErrorHandler = {
     },
     handle(handlerInput, error) {
         console.log('Error handled: ' + JSON.stringify(error.message));
+        // console.log('Original Request was:', JSON.stringify(handlerInput.requestEnvelope.request, null, 2));
 
         var speechText = 'Ups. Entschuldigung, im Alexa Skill Schiffe Versenken ist ein Fehler aufgetreten.';
         return handlerInput.responseBuilder
@@ -232,7 +233,7 @@ const LaunchRequestHandler = {
     },
     handle(handlerInput) {
 
-        httpAction('/alexa/register', 'hello from alexa')
+        //httpAction('/alexa/register', 'hello from alexa')
 
         var speechText = "Willkommen bei Schiffe Versenken. Zunächst musst du deine Schiffe auf deinem Spielfeld platzieren. Du siehst auf der Spielanzeige dein aktuelles Schiff und dessen Rotation. Um ein Schiff um 90 Grad zu rotieren, sage einfach, Schiff drehen. Um das Schiff zu platzieren, sage einfach, platziere Schiff auf Zeile Spalte. Wenn dir die finale Position deines aktuellen Schiffes gefällt, sag einfach, nächstes Schiff. Wenn du alle Schiffe gesetzt hast, sag einfach, fertig.";
         return handlerInput.responseBuilder
