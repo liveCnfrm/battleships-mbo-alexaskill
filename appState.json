@@ -11,8 +11,8 @@
         "isRemovable": true,
         "filePath": "battleShipsMBO.js",
         "cursor": {
-          "lineNumber": 236,
-          "column": 38
+          "lineNumber": 273,
+          "column": 7
         },
         "config": {
           "runtime": "nodejs14.x",
@@ -28,7 +28,7 @@
             "config": {}
           }
         ],
-        "lastUpdated": 1626330679597
+        "lastUpdated": 1626348520311
       },
       "2aaa4441-e4c5-4d05-ad70-95477181fd77": {
         "id": "2aaa4441-e4c5-4d05-ad70-95477181fd77",
@@ -38,13 +38,15 @@
         "isDirectory": false,
         "children": [],
         "isRemovable": true,
-        "filePath": "package.json"
+        "filePath": "package.json",
+        "lastUpdated": 1626348790351
       }
     },
     "openFiles": [
-      "e0cba156-4de2-4bc1-a634-a1dbbe622289"
+      "e0cba156-4de2-4bc1-a634-a1dbbe622289",
+      "2aaa4441-e4c5-4d05-ad70-95477181fd77"
     ],
-    "currentFileId": "e0cba156-4de2-4bc1-a634-a1dbbe622289",
+    "currentFileId": "2aaa4441-e4c5-4d05-ad70-95477181fd77",
     "resources": {
       "alexaSKb3ca4d90d3ce4143830bf243f9d3e7ac": {
         "name": "alexaSKb3ca4d90d3ce4143830bf243f9d3e7ac",
@@ -91,6 +93,12 @@
         "request": {
           "name": "request",
           "version": "2.88.2",
+          "dev": false,
+          "language": "nodejs"
+        },
+        "needle": {
+          "name": "needle",
+          "version": "2.8.0",
           "dev": false,
           "language": "nodejs"
         }

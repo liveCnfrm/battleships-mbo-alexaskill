@@ -1,5 +1,5 @@
 const Alexa = require('ask-sdk');
-const request = require('request');
+const http = require('http');
 
 let skill;
 
@@ -233,14 +233,15 @@ const LaunchRequestHandler = {
 
         var speechText = 'Willkommen bei Schiffe Versenken. Zunächst musst du deine Schiffe auf deinem Spielfeld platzieren. Du siehst auf der Spielanzeige dein aktuelles Schiff und dessen Rotation. Um ein Schiff um 90 Grad zu rotieren, sage einfach, Schiff drehen. Um das Schiff zu platzieren, sage einfach, platziere Schiff auf Zeile Spalte. Wenn dir die finale Position deines aktuellen Schiffes gefällt, sag einfach, nächstes Schiff. Wenn du alle Schiffe gesetzt hast, sag einfach, fertig.';
 
-        httpAction('/alexa/register')
+        httpAction('/alexa/register');
 
         return handlerInput.responseBuilder
-            .speak(speechText)
-            .withShouldEndSession(false)
-            .getResponse();
+                .speak(speechText)
+                .withShouldEndSession(false)
+                .getResponse();
     }
 };
+
 
 
 function httpAction(actionPath, x = -1, y = -1) {
@@ -252,18 +253,22 @@ function httpAction(actionPath, x = -1, y = -1) {
         pathURL = pathURL + "?x=" + x.toString() + "&y=" + y.toString();
     }
 
-    const url = 'http://mboex.ddns.net:3000' + pathURL;
 
-    request.get(url, (error, response, body) => {
-        // let json = JSON.parse(body);
-        console.log('error:', error); // Print the error if one occurred
-        console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-        console.log('body:', body); // Print the body
+    const options = {
+        hostname: 'mboex.ddns.net',
+        port: 3000,
+        method: 'GET',
+        path: pathURL
+    }
 
-        const theFact = body;
-        const speechOutput = theFact;
-        this.response.cardRenderer(SKILL_NAME, theFact);
-        this.response.speak(speechOutput + " Would you like another fact?").listen("Would you like another fact?");
-        this.emit(':responseReady');
-    });
+    const req = http.request(options, res => {
+        console.log('statusCode: ${res.statusCode}')
+
+        res.on('data', d => {
+
+        })
+
+        res.on('end', () => {
+        });
+    })
 }
