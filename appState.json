@@ -11,8 +11,8 @@
         "isRemovable": true,
         "filePath": "battleShipsMBO.js",
         "cursor": {
-          "lineNumber": 281,
-          "column": 14
+          "lineNumber": 236,
+          "column": 38
         },
         "config": {
           "runtime": "nodejs14.x",
@@ -81,6 +81,18 @@
           "version": "2.7.0",
           "dev": false,
           "notRemovable": false
+        },
+        "axios": {
+          "name": "axios",
+          "version": "0.21.1",
+          "dev": false,
+          "language": "nodejs"
+        },
+        "request": {
+          "name": "request",
+          "version": "2.88.2",
+          "dev": false,
+          "language": "nodejs"
         }
       }
     }
@@ -94,7 +106,7 @@
     "platform": "AWS",
     "language": "nodejs",
     "platformRegions": {},
-    "lastSave": 1623743356522
+    "lastSave": 1626341505931
   },
   "VCS_STATE": {
     "provider": "GitHub",

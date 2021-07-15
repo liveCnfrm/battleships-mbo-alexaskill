@@ -1,9 +1,10 @@
 const Alexa = require('ask-sdk');
+const request = require('request');
+
 let skill;
 
 var shipCount = 5;
 var battleStarted = false;
-
 
 exports.handler = async function (event, context) {
     //console.log('REQUEST ' + JSON.stringify(event));
@@ -56,12 +57,7 @@ const PlaceShipHandler = {
                 speechText = 'Du befindest dich im Spiel gegen deinen Gegner. Du kannst jetzt kein Schiff auf dem Spielfeld platzieren!';
             }
             else {
-
-
-
                 httpAction('/alexa/place', columnID, rowID);
-
-
                 speechText = 'Das aktuelle Schiff wurde auf ' + columnValue.toString() + ' ' + rowValue.toString() + ' gesetzt. ' + 'Wenn du mit der Position und der Rotation des Schiffs zufrieden bist, sag einfach: nächstes Schiff.';
             }
         }
@@ -79,8 +75,6 @@ const ShootHandler = {
             && handlerInput.requestEnvelope.request.intent.name === 'Shoot';
     },
     handle(handlerInput) {
-
-
         const rowValue = Alexa.getSlotValue(handlerInput.requestEnvelope, 'row');
         const columnValue = Alexa.getSlotValue(handlerInput.requestEnvelope, 'column');
 
@@ -237,9 +231,10 @@ const LaunchRequestHandler = {
     },
     handle(handlerInput) {
 
-        httpAction('/alexa/register');
-
         var speechText = 'Willkommen bei Schiffe Versenken. Zunächst musst du deine Schiffe auf deinem Spielfeld platzieren. Du siehst auf der Spielanzeige dein aktuelles Schiff und dessen Rotation. Um ein Schiff um 90 Grad zu rotieren, sage einfach, Schiff drehen. Um das Schiff zu platzieren, sage einfach, platziere Schiff auf Zeile Spalte. Wenn dir die finale Position deines aktuellen Schiffes gefällt, sag einfach, nächstes Schiff. Wenn du alle Schiffe gesetzt hast, sag einfach, fertig.';
+
+        httpAction('/alexa/register')
+
         return handlerInput.responseBuilder
             .speak(speechText)
             .withShouldEndSession(false)
@@ -257,26 +252,18 @@ function httpAction(actionPath, x = -1, y = -1) {
         pathURL = pathURL + "?x=" + x.toString() + "&y=" + y.toString();
     }
 
-    const http = require('http')
+    const url = 'http://mboex.ddns.net:3000' + pathURL;
 
-    const options = {
-        hostname: 'mboex.ddns.net',
-        port: 3000,
-        method: 'GET',
-        path: pathURL
-    }
+    request.get(url, (error, response, body) => {
+        // let json = JSON.parse(body);
+        console.log('error:', error); // Print the error if one occurred
+        console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+        console.log('body:', body); // Print the body
 
-    const req = http.request(options, res => {
-        console.log('statusCode: ${res.statusCode}')
-
-        res.on('data', d => {
-            process.stdout.write(d)
-        })
-    })
-
-    req.on('error', error => {
-        console.error(error)
-    })
-
-    req.end()
+        const theFact = body;
+        const speechOutput = theFact;
+        this.response.cardRenderer(SKILL_NAME, theFact);
+        this.response.speak(speechOutput + " Would you like another fact?").listen("Would you like another fact?");
+        this.emit(':responseReady');
+    });
 }
