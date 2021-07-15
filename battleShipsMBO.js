@@ -59,7 +59,7 @@ const PlaceShipHandler = {
 
 
 
-                httpAction('/alexa/place', 'placing ship from alexa', columnID, rowID);
+                httpAction('/alexa/place', columnID, rowID);
 
 
                 speechText = 'Das aktuelle Schiff wurde auf ' + columnValue.toString() + ' ' + rowValue.toString() + ' gesetzt. ' + 'Wenn du mit der Position und der Rotation des Schiffs zufrieden bist, sag einfach: nächstes Schiff.';
@@ -90,7 +90,7 @@ const ShootHandler = {
         const rowID = parseInt(rowSLOT.resolutions.resolutionsPerAuthority[0].values[0].value.id);
         const columnID = parseInt(columnSLOT.resolutions.resolutionsPerAuthority[0].values[0].value.id);
 
-        httpAction('/alexa/shoot', 'shooting on target from alexa', columnID, rowID);
+        httpAction('/alexa/shoot', columnID, rowID);
 
         var speechText = '';
 
@@ -114,7 +114,7 @@ const RotateHandler = {
     },
     handle(handlerInput) {
 
-        httpAction('/alexa/rotate', 'rotating ship from alexa')
+        httpAction('/alexa/rotate')
 
         var speechText = '';
 
@@ -140,7 +140,7 @@ const NextShipHandler = {
     },
     handle(handlerInput) {
 
-        httpAction('/alexa/next_ship', 'next Ship from alexa');
+        httpAction('/alexa/next_ship');
 
         var speechText = '';
 
@@ -172,7 +172,7 @@ const RestartHandler = {
         battleStarted = false;
         shipCount = 5;
 
-        httpAction('/alexa/restart', 'restarting from alexa')
+        httpAction('/alexa/restart')
 
         var speechText = 'Okay, ich starte das Spiel Schiffe Versenken von vorn. Nun musst du erst wieder alle deine Schiffe platzieren.';
 
@@ -202,7 +202,7 @@ const FinishPlacementHandler = {
                 speechText = 'Okay, alle Schiffe sind gesetzt. Jetzt kannst du auf eine Position des gegnerischen Spielfelds schießen. Sage einfach, Schieße auf Zeile Spalte.';
                 battleStarted = true;
 
-                httpAction('/alexa/finish_placement', 'finishing placement from alexa');
+                httpAction('/alexa/finish_placement');
             }
         } else {
             speechText = 'Derzeit sind ' + shipCount.toString() + ' Schiffe noch nicht gesetzt. Damit das Spiel gestartet werden kann müssen zunächst alle deiner Schiffe auf dem Spielfeld gesetzt sein.'
@@ -237,7 +237,7 @@ const LaunchRequestHandler = {
     },
     handle(handlerInput) {
 
-        httpAction('/alexa/register', 'hello from alexa');
+        httpAction('/alexa/register');
 
         var speechText = 'Willkommen bei Schiffe Versenken. Zunächst musst du deine Schiffe auf deinem Spielfeld platzieren. Du siehst auf der Spielanzeige dein aktuelles Schiff und dessen Rotation. Um ein Schiff um 90 Grad zu rotieren, sage einfach, Schiff drehen. Um das Schiff zu platzieren, sage einfach, platziere Schiff auf Zeile Spalte. Wenn dir die finale Position deines aktuellen Schiffes gefällt, sag einfach, nächstes Schiff. Wenn du alle Schiffe gesetzt hast, sag einfach, fertig.';
         return handlerInput.responseBuilder
@@ -248,7 +248,7 @@ const LaunchRequestHandler = {
 };
 
 
-function httpAction(actionPath, msg='', x = -1, y = -1) {
+function httpAction(actionPath, x = -1, y = -1) {
 
     var pathURL = actionPath;
 
@@ -259,24 +259,15 @@ function httpAction(actionPath, msg='', x = -1, y = -1) {
 
     const http = require('http')
 
-    const data = JSON.stringify({
-        message: msg
-    })
-
     const options = {
         hostname: 'mboex.ddns.net',
         port: 3000,
-        method: 'POST',
-        path: pathURL,
-        headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': data.length
-        }
+        method: 'GET',
+        path: pathURL
     }
 
-
     const req = http.request(options, res => {
-        console.log(`statusCode: ${res.statusCode}`)
+        console.log('statusCode: ${res.statusCode}')
 
         res.on('data', d => {
             process.stdout.write(d)
@@ -287,6 +278,5 @@ function httpAction(actionPath, msg='', x = -1, y = -1) {
         console.error(error)
     })
 
-    req.write(data)
     req.end()
 }
