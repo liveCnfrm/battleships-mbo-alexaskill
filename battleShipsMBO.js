@@ -1,6 +1,8 @@
 const Alexa = require('ask-sdk');
 const http = require('http');
 
+const needle = require('needle');
+
 let skill;
 
 var shipCount = 5;
@@ -271,4 +273,13 @@ function httpAction(actionPath, x = -1, y = -1) {
         res.on('end', () => {
         });
     })
+}
+
+async function getUser() {
+  try {
+    const response = await axios.get('/user?ID=12345');
+    console.log(response);
+  } catch (error) {
+    console.error(error);
+  }
 }
