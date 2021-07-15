@@ -40,8 +40,8 @@ const PlaceShipHandler = {
         const rowSLOT = Alexa.getSlot(handlerInput.requestEnvelope, 'row');
         const columnSLOT = Alexa.getSlot(handlerInput.requestEnvelope, 'column');
 
-        const rowID = rowSLOT.resolutions.resolutionsPerAuthority[0].values[0].value.id;
-        const columnID = columnSLOT.resolutions.resolutionsPerAuthority[0].values[0].value.id;
+        const rowID = parseInt(rowSLOT.resolutions.resolutionsPerAuthority[0].values[0].value.id);
+        const columnID = parseInt(columnSLOT.resolutions.resolutionsPerAuthority[0].values[0].value.id);
 
         var speechText = '';
 
@@ -57,12 +57,9 @@ const PlaceShipHandler = {
             }
             else {
 
-                //TODO
 
-                //speechText = columnID.toString();
 
-                //httpAction('/alexa/place', 'PlaceShip from alexa', columnID, rowID);
-                httpAction('/alexa/place', 'PlaceShip from alexa', 1, 2);
+                httpAction('/alexa/place', 'placing ship from alexa', columnID, rowID);
 
 
                 speechText = 'Das aktuelle Schiff wurde auf ' + columnValue.toString() + ' ' + rowValue.toString() + ' gesetzt. ' + 'Wenn du mit der Position und der Rotation des Schiffs zufrieden bist, sag einfach: nächstes Schiff.';
@@ -90,10 +87,10 @@ const ShootHandler = {
         const rowSLOT = Alexa.getSlot(handlerInput.requestEnvelope, 'row');
         const columnSLOT = Alexa.getSlot(handlerInput.requestEnvelope, 'column');
 
-        const rowID = rowSLOT.resolutions.resolutionsPerAuthority[0].values[0].value.id;
-        const columnID = columnSLOT.resolutions.resolutionsPerAuthority[0].values[0].value.id;
+        const rowID = parseInt(rowSLOT.resolutions.resolutionsPerAuthority[0].values[0].value.id);
+        const columnID = parseInt(columnSLOT.resolutions.resolutionsPerAuthority[0].values[0].value.id);
 
-        //httpAction('/alexa/shoot', 'Shoot from alexa', columnID, rowID);
+        httpAction('/alexa/shoot', 'shooting on target from alexa', columnID, rowID);
 
         var speechText = '';
 
@@ -117,7 +114,7 @@ const RotateHandler = {
     },
     handle(handlerInput) {
 
-        //httpAction('/alexa/rotate', 'Rotate from alexa')
+        httpAction('/alexa/rotate', 'rotating ship from alexa')
 
         var speechText = '';
 
@@ -143,7 +140,7 @@ const NextShipHandler = {
     },
     handle(handlerInput) {
 
-        //httpAction('/alexa/next_ship', 'NextShip from alexa');
+        httpAction('/alexa/next_ship', 'next Ship from alexa');
 
         var speechText = '';
 
@@ -175,7 +172,7 @@ const RestartHandler = {
         battleStarted = false;
         shipCount = 5;
 
-        //httpAction('/alexa/restart', 'restart game from alexa')
+        httpAction('/alexa/restart', 'restarting from alexa')
 
         var speechText = 'Okay, ich starte das Spiel Schiffe Versenken von vorn. Nun musst du erst wieder alle deine Schiffe platzieren.';
 
@@ -205,7 +202,7 @@ const FinishPlacementHandler = {
                 speechText = 'Okay, alle Schiffe sind gesetzt. Jetzt kannst du auf eine Position des gegnerischen Spielfelds schießen. Sage einfach, Schieße auf Zeile Spalte.';
                 battleStarted = true;
 
-                //httpAction('/alexa/finish_placement', 'FinishPlacement from alexa');
+                httpAction('/alexa/finish_placement', 'finishing placement from alexa');
             }
         } else {
             speechText = 'Derzeit sind ' + shipCount.toString() + ' Schiffe noch nicht gesetzt. Damit das Spiel gestartet werden kann müssen zunächst alle deiner Schiffe auf dem Spielfeld gesetzt sein.'
@@ -240,7 +237,7 @@ const LaunchRequestHandler = {
     },
     handle(handlerInput) {
 
-        httpAction('/alexa/register', 'Hello from Alexa');
+        httpAction('/alexa/register', 'hello from alexa');
 
         var speechText = 'Willkommen bei Schiffe Versenken. Zunächst musst du deine Schiffe auf deinem Spielfeld platzieren. Du siehst auf der Spielanzeige dein aktuelles Schiff und dessen Rotation. Um ein Schiff um 90 Grad zu rotieren, sage einfach, Schiff drehen. Um das Schiff zu platzieren, sage einfach, platziere Schiff auf Zeile Spalte. Wenn dir die finale Position deines aktuellen Schiffes gefällt, sag einfach, nächstes Schiff. Wenn du alle Schiffe gesetzt hast, sag einfach, fertig.';
         return handlerInput.responseBuilder
@@ -251,7 +248,7 @@ const LaunchRequestHandler = {
 };
 
 
-function httpAction(actionPath, message, x = -1, y = -1) {
+function httpAction(actionPath, msg='', x = -1, y = -1) {
 
     var pathURL = actionPath;
 
@@ -260,23 +257,26 @@ function httpAction(actionPath, message, x = -1, y = -1) {
         pathURL = pathURL + "?x=" + x.toString() + "&y=" + y.toString();
     }
 
-    console.log(pathURL);
-
-    const https = require('https')
+    const http = require('http')
 
     const data = JSON.stringify({
-        msg: message
+        message: msg
     })
 
     const options = {
-        hostname: 'ptsv2.com/t/mboTest',
+        hostname: 'mboex.ddns.net',
         port: 3000,
-        method: 'GET',
-        path: pathURL
+        method: 'POST',
+        path: pathURL,
+        headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': data.length
+        }
     }
 
-    const req = https.request(options, res => {
-        console.log('statusCode: ${res.statusCode}')
+
+    const req = http.request(options, res => {
+        console.log(`statusCode: ${res.statusCode}`)
 
         res.on('data', d => {
             process.stdout.write(d)
@@ -287,5 +287,6 @@ function httpAction(actionPath, message, x = -1, y = -1) {
         console.error(error)
     })
 
+    req.write(data)
     req.end()
 }
